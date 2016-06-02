@@ -6,13 +6,18 @@ var megaRoster =  {
 
   },
   setupEventListeners : function(ev){
-        document.querySelector('form').onsubmit = this.addStudent;
+        document.querySelector('#studentForm').onsubmit = this.addStudent;
   },
    addStudent :  function(ev) {
      ev.preventDefault();
+     this.appendChild(buildListItem());
      document.querySelector('input');
-     console.log("TEST!");
   },
+  buildListItem : function(studentName) {
+      var li = document.createElement('li');
+      li.innerText = studentName;
+      return li;
+   },
 
 };
 megaRoster.init();
