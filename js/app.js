@@ -39,16 +39,52 @@ var megaRoster =  {
         },
       } );
       li.appendChild(delLink);
-
+      //
       var borderLink = this.buildLink(
         { text: 'Promote',
         func: function(){
           li.style.border = '2px dashed blue';
         },
       } );
-
       li.appendChild(borderLink);
+      //
+      var topLink = this.buildLink( {
+        text: 'Send to Top',
+        func: function(){
+          li.parentElement.insertBefore(li,li.parentElement.firstChild);
+        },
+      });
+      li.appendChild(topLink);
+      //
+      var bottomLink = this.buildLink({
+        text: 'Send to Bottom',
+        func: function() {
+          li.parentElement.appendChild(li);
+        },
 
+      });
+      //
+      li.appendChild(bottomLink);
+      var upLink = this.buildLink({
+        text: '^',
+        func: function() {
+          if(li.parentElement.firstChild !== li){
+            li.parentElement.insertBefore(li,li.previousSibling);
+          }
+      },
+      });
+      li.appendChild(upLink);
+      //
+      var downLink = this.buildLink({
+          text: 'v',
+          func: function(){
+            if(li.parentElement.lastChild !== li) {
+              li.parentElement.insertBefore(li.nextSibling, li);
+            }
+          },
+      });
+      li.appendChild(downLink);
+      //
       return li;
    },
 };
