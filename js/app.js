@@ -26,21 +26,22 @@ var megaRoster =  {
   buildListItem : function(studentName) {
       var li = document.createElement('li');
       li.innerText = studentName;
-      li.appendChild(this.buildLink(
+      var delLink = this.buildLink(
         { text: 'Remove',
         func: function(){
           li.parentElement.removeChild(li);
         },
-      } ));
+      } );
+      li.appendChild(delLink);
 
-
-
-      li.appendChild(this.buildLink(
+      var borderLink = this.buildLink(
         { text: 'Promote',
         func: function(){
-          li.border = 'border solid blue';
+          li.style.border = '2px dashed blue';
         },
-      } ));
+      } );
+
+      li.appendChild(borderLink);
 
       return li;
    },
