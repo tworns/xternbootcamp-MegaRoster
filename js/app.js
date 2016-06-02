@@ -29,6 +29,8 @@ var megaRoster =  {
     return link;
 
   },
+
+
   buildListItem : function(studentName) {
       var li = document.createElement('li');
       li.innerText = studentName;
@@ -84,6 +86,46 @@ var megaRoster =  {
           },
       });
       li.appendChild(downLink);
+      //
+      var editLink = this.buildLink({
+        text: 'Edit',
+        func : function(){
+          var editLi = document.createElement('li');
+          var editContainer= document.createElement('form');
+          //
+          var editBox = document.createElement('input');
+          editBox.type = 'text';
+          editBox.name = 'editName';
+          editBox.placeholder = 'New Name';
+          editBox.id = 'edit';
+          //
+          var editConf = megaRoster.buildLink({
+            text: 'Confirm',
+            func: function(){
+              var box = document.querySelector('#edit');
+              var newLi = megaRoster.buildListItem(box.value);
+              li.parentElement.insertBefore(newLi,li);
+              li.parentElement.removeChild(editLi);
+              li.parentElement.removeChild(li);
+
+            },
+          });
+          var editCancel = megaRoster.buildLink({
+            text : 'Cancel',
+            func : function(){
+              li.parentElement.removeChild(editLi);
+              },
+          });
+          //
+          editContainer.appendChild(editBox);
+          editContainer.appendChild(editConf);
+          editContainer.appendChild(editCancel);
+          editLi.appendChild(editContainer);
+          //
+          li.parentElement.appendChild(editLi);
+        }
+      });
+      li.appendChild(editLink);
       //
       return li;
    },
