@@ -51,6 +51,5 @@ var megaRoster =  {
 
       return li;
    },
-
 };
 megaRoster.init();
