@@ -11,8 +11,14 @@ var megaRoster =  {
    addStudent :  function(ev) {
      ev.preventDefault();
      var f = ev.currentTarget;
-     document.querySelector('#studentList').appendChild(this.buildListItem(f.studentName.value));
-    f.reset();
+     var list = document.querySelector('#studentList');
+     if(list.firstChild === null) {
+       list.appendChild(this.buildListItem(f.studentName.value));
+    }
+    else {
+      list.insertBefore(this.buildListItem(f.studentName.value), list.childNodes[0]);
+    }
+     f.reset();
      f.studentName.focus();
   },
   buildLink : function(options) {
