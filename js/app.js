@@ -15,9 +15,33 @@ var megaRoster =  {
     f.reset();
      f.studentName.focus();
   },
+  buildLink : function(options) {
+    var link =document.createElement('a');
+    link.href = '#';
+    link.innerText = options.text;
+    link.onclick = options.func;
+    return link;
+
+  },
   buildListItem : function(studentName) {
       var li = document.createElement('li');
       li.innerText = studentName;
+      li.appendChild(this.buildLink(
+        { text: 'Remove',
+        func: function(){
+          li.parentElement.removeChild(li);
+        },
+      } ));
+
+
+
+      li.appendChild(this.buildLink(
+        { text: 'Promote',
+        func: function(){
+          li.border = 'border solid blue';
+        },
+      } ));
+
       return li;
    },
 

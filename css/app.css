@@ -5,6 +5,6 @@
 li{
   list-style-type: none;
 }
-#studentList {
-
+#studentList a {
+  margin-left: 20px;
 }
