@@ -10,7 +10,10 @@ var megaRoster =  {
   },
    addStudent :  function(ev) {
      ev.preventDefault();
-     document.querySelector('#studentList').appendChild(this.buildListItem(ev.currentTarget.studentName.value));
+     var f = ev.currentTarget;
+     document.querySelector('#studentList').appendChild(this.buildListItem(f.studentName.value));
+    f.reset();
+     f.studentName.focus();
   },
   buildListItem : function(studentName) {
       var li = document.createElement('li');
