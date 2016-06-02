@@ -14,7 +14,5 @@ var megaRoster =  {
      console.log("TEST!");
   },
 
-
-
 };
 megaRoster.init();
