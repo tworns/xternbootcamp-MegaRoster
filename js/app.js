@@ -109,7 +109,7 @@ var megaRoster =  {
           var editBox = document.createElement('input');
           editBox.type = 'text';
           editBox.name = 'editName';
-          editBox.placeholder = studentName;
+          editBox.value = studentName;
           editBox.required = true;
           editBox.id = 'edit';
           //
