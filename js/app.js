@@ -145,6 +145,7 @@ var megaRoster =  {
           //
           li.parentElement.appendChild(editLi);
           editBox.focus();
+          editBox.select();
         }
       });
       li.appendChild(editLink);
