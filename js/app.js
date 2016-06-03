@@ -9,6 +9,7 @@ var megaRoster =  {
   setupEventListeners : function(ev){
         document.querySelector('#studentForm').onsubmit = this.addStudent.bind(this);
   },
+  //
    addStudent :  function(ev) {
      ev.preventDefault();
      var f = ev.currentTarget;
@@ -23,11 +24,13 @@ var megaRoster =  {
      f.reset();
      f.studentName.focus();
   },
+  //
   buildLink : function(options) {
     var link =document.createElement('a');
     link.href = '#';
     link.innerText = options.text;
     link.onclick = options.func;
+    link.backgroundcolor = 'grey';
     return link;
 
   },
@@ -41,6 +44,7 @@ var megaRoster =  {
         { text: 'Remove',
         func: function(){
           li.parentElement.removeChild(li);
+          localStorage.setItem("list",document.querySelector('#studentList').innerHTML);
         },
       } );
       li.appendChild(delLink);
@@ -89,7 +93,7 @@ var megaRoster =  {
       });
       li.appendChild(upLink);
       //
-      var downLink = this.buildLink({
+    var downLink = this.buildLink({
           text: 'v',
           func: function(){
             if(li.parentElement.lastChild !== li) {
@@ -99,7 +103,7 @@ var megaRoster =  {
       });
       li.appendChild(downLink);
       //
-      var editLink = this.buildLink({
+    var editLink = this.buildLink({
         text: 'Edit',
         func : function(){
           var editLi = document.createElement('li');
@@ -108,19 +112,22 @@ var megaRoster =  {
           var editBox = document.createElement('input');
           editBox.type = 'text';
           editBox.name = 'editName';
-          editBox.placeholder = studentName ;
+          editBox.placeholder = studentName;
           editBox.required = true;
           editBox.id = 'edit';
+
           //
           var editConf = megaRoster.buildLink({
             text: 'Confirm',
             func: function(){
               var box = document.querySelector('#edit');
+
               if(box.value !== "") {
               var newLi = megaRoster.buildListItem(box.value);
               li.parentElement.insertBefore(newLi,li);
               li.parentElement.removeChild(editLi);
               li.parentElement.removeChild(li);
+              localStorage.setItem("list",document.querySelector('#studentList').innerHTML);
             }
             else {
               editBox.placeholder = "Please enter a value!";
@@ -140,6 +147,7 @@ var megaRoster =  {
           editLi.appendChild(editContainer);
           //
           li.parentElement.appendChild(editLi);
+          editBox.focus();
         }
       });
       li.appendChild(editLink);
