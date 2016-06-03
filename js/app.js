@@ -1,10 +1,12 @@
 $(document).foundation();
-
+//TODO use localStorage to make data persistant
+// (loop through list, stash names in an object array, use JSON.stringify to insert into localStorage. JSON.parse and build item to reconstitue objects)
+//Use foundation button styles on links.
 var megaRoster =  {
   init: function() {
     this.setupEventListeners();
     var list = document.querySelector('#studentList');
-    document.getElementById("studentList").innerHTML =localStorage.getItem('list');
+    document.getElementById("studentList").innerHTML =JSON.parse(localStorage.getItem('list'));
   },
   setupEventListeners : function(ev){
         document.querySelector('#studentForm').onsubmit = this.addStudent.bind(this);
@@ -20,7 +22,7 @@ var megaRoster =  {
     else {
       list.insertBefore(this.buildListItem(f.studentName.value), list.childNodes[0]);
     }
-    localStorage.setItem("list",document.querySelector('#studentList').innerHTML);
+    localStorage.setItem("list",JSON.stringify(document.querySelector('#studentList').innerHTML));
      f.reset();
      f.studentName.focus();
   },
@@ -28,7 +30,7 @@ var megaRoster =  {
   buildLink : function(options) {
     var link =document.createElement('a');
     link.href = '#';
-    link.innerText = options.text;
+    link.innerHTML = options.contents;
     link.onclick = options.func;
     link.backgroundcolor = 'grey';
     return link;
@@ -39,25 +41,27 @@ var megaRoster =  {
       li.innerText = studentName;
       var bordered = 0;
       var delLink = this.buildLink(
-        { text: 'Remove',
+        { contents: 'Remove',
         func: function(){
           li.parentElement.removeChild(li);
-          localStorage.setItem("list",document.querySelector('#studentList').innerHTML);
+          localStorage.setItem("list",JSON.stringify(document.querySelector('#studentList').innerHTML));
         },
       } );
       li.appendChild(delLink);
       //
       var borderLink = this.buildLink(
-        { text: 'Promote',
+        { contents: 'Favorite',
         func: function(){
         if(bordered === 0) {
           li.style.border = '2px dashed blue';
           bordered = 1;
-          this.text = 'Demote';
+          this.contents = 'Unfavorite';
+          this.innerHTML = 'Unfavorite';
         }
         else{
             li.style.border = 'none';
-            this.text = 'Promote';
+            this.contents = 'Favorite';
+            this.innerHTML = 'Favorite';
             bordered = 0;
         }
         },
@@ -65,7 +69,7 @@ var megaRoster =  {
       li.appendChild(borderLink);
       //
       var topLink = this.buildLink( {
-        text: 'Send to Top',
+        contents: 'Send to Top',
         func: function(){
           li.parentElement.insertBefore(li,li.parentElement.firstChild);
         },
@@ -73,7 +77,7 @@ var megaRoster =  {
       li.appendChild(topLink);
       //
       var bottomLink = this.buildLink({
-        text: 'Send to Bottom',
+        contents: 'Send to Bottom',
         func: function() {
           li.parentElement.appendChild(li);
         },
@@ -81,7 +85,7 @@ var megaRoster =  {
       li.appendChild(bottomLink);
       //
       var upLink = this.buildLink({
-        text: '^',
+        contents: '<i class ="fa fa-arrow-up"></i>',
         func: function() {
           if(li.parentElement.firstChild !== li){
             li.parentElement.insertBefore(li,li.previousSibling);
@@ -91,7 +95,7 @@ var megaRoster =  {
       li.appendChild(upLink);
       //
     var downLink = this.buildLink({
-          text: 'v',
+          contents: 'v',
           func: function(){
             if(li.parentElement.lastChild !== li) {
               li.parentElement.insertBefore(li.nextSibling, li);
@@ -101,7 +105,7 @@ var megaRoster =  {
       li.appendChild(downLink);
       //
     var editLink = this.buildLink({
-        text: 'Edit',
+        contents: 'Edit',
         func : function(){
           var editLi = document.createElement('li');
           var editContainer= document.createElement('form');
@@ -114,7 +118,7 @@ var megaRoster =  {
           editBox.id = 'edit';
           //
           var editConf = megaRoster.buildLink({
-            text: 'Confirm',
+            contents: 'Confirm',
             func: function(){
               var box = document.querySelector('#edit');
 
@@ -123,7 +127,7 @@ var megaRoster =  {
               li.parentElement.insertBefore(newLi,li);
               li.parentElement.removeChild(editLi);
               li.parentElement.removeChild(li);
-              localStorage.setItem("list",document.querySelector('#studentList').innerHTML);
+              localStorage.setItem("list",JSON.stringify(document.querySelector('#studentList').innerHTML));
             }
             else {
               editBox.placeholder = "Please enter a value!";
@@ -132,7 +136,7 @@ var megaRoster =  {
           });
           //
           var editCancel = megaRoster.buildLink({
-            text : 'Cancel',
+            contents : 'Cancel',
             func : function(){
               li.parentElement.removeChild(editLi);
               },
