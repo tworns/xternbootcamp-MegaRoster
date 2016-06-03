@@ -3,7 +3,8 @@ $(document).foundation();
 var megaRoster =  {
   init: function() {
     this.setupEventListeners();
-
+    var list = document.querySelector('#studentList');
+    document.getElementById("studentList").innerHTML =localStorage.getItem('list');
   },
   setupEventListeners : function(ev){
         document.querySelector('#studentForm').onsubmit = this.addStudent.bind(this);
@@ -18,6 +19,7 @@ var megaRoster =  {
     else {
       list.insertBefore(this.buildListItem(f.studentName.value), list.childNodes[0]);
     }
+    localStorage.setItem("list",document.querySelector('#studentList').innerHTML);
      f.reset();
      f.studentName.focus();
   },
