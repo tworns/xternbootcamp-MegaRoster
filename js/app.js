@@ -32,10 +32,8 @@ var megaRoster =  {
     link.onclick = options.func;
     link.backgroundcolor = 'grey';
     return link;
-
   },
-
-
+//
   buildListItem : function(studentName) {
       var li = document.createElement('li');
       li.innerText = studentName;
@@ -52,7 +50,7 @@ var megaRoster =  {
       var borderLink = this.buildLink(
         { text: 'Promote',
         func: function(){
-          if(bordered === 0) {
+        if(bordered === 0) {
           li.style.border = '2px dashed blue';
           bordered = 1;
           this.text = 'Demote';
@@ -79,10 +77,9 @@ var megaRoster =  {
         func: function() {
           li.parentElement.appendChild(li);
         },
-
       });
-      //
       li.appendChild(bottomLink);
+      //
       var upLink = this.buildLink({
         text: '^',
         func: function() {
@@ -115,7 +112,6 @@ var megaRoster =  {
           editBox.placeholder = studentName;
           editBox.required = true;
           editBox.id = 'edit';
-
           //
           var editConf = megaRoster.buildLink({
             text: 'Confirm',
@@ -134,6 +130,7 @@ var megaRoster =  {
               }
             },
           });
+          //
           var editCancel = megaRoster.buildLink({
             text : 'Cancel',
             func : function(){
