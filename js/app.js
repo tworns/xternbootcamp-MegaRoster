@@ -1,21 +1,36 @@
 $(document).foundation()
 
 var megaRoster = {
+    studentRoster : ["&","l","d"],
   init: function(rosterElementSelector) {
     this.rosterElement = document.querySelector(rosterElementSelector);
     this.setupEventListeners();
+    this.loadRoster(this.studentRoster);
   },
 
   setupEventListeners: function() {
     document.querySelector('#studentForm').onsubmit = this.addStudent.bind(this);
-  },
 
+  },
+  loadRoster : function(roster) {
+    roster = JSON.parse(localStorage.getItem('roster'));
+    debugger;
+    if(roster!== null) {
+    for(var i = 0; i< roster.length; i++) {
+      if(roster[i] !== undefined){
+      this.buildListItem(roster.shift());
+    }
+  }
+  }
+  this.studentRoster = roster;
+  },
   addStudent: function(ev) {
     ev.preventDefault();
     var f = ev.currentTarget;
     var studentName = f.studentName.value;
     var item = this.buildListItem(studentName);
     this.prependChild(this.rosterElement, item);
+    this.addToRoster(studentName);
     f.reset();
     f.studentName.focus();
   },
@@ -34,7 +49,12 @@ var megaRoster = {
 
     return item;
   },
-
+  addToRoster: function(name){
+    if(megaRoster.studentRoster !== null){
+      megaRoster.studentRoster.push(name);
+      localStorage.setItem('roster',JSON.stringify(this.studentRoster));
+    }
+  },
   promote: function(item) {
     this.prependChild(this.rosterElement, item);
   },
@@ -46,10 +66,20 @@ var megaRoster = {
 
   moveDown: function(item) {
     this.moveUp(item.nextElementSibling);
+    item.querySelector('.favorite').contents = 'unfavorite';
   },
   favorite: function(item) {
      var i = item.parentElement.querySelector('.studentName');
-    i.style.backgroundColor = "Gold" ;
+     if(item.favoriteable === "true") {
+       item.querySelector('.favorite').innerHTML = 'Unfavorite';
+       i.style.backgroundColor = "Gold" ;
+       item.favoriteable = "false";
+  }
+  else {
+    item.querySelector('.favorite').innerHTML = 'Favorite';
+    item.favoriteable = "true";
+    i.style.backgroundColor = 'transparent';
+  }
   },
 
   toggleEditable: function(el) {
@@ -88,6 +118,7 @@ var megaRoster = {
         //
     var favLink = this.buildLink({
         contents: 'Favorite',
+        favoriteable : 'true',
         className: 'favorite button small',
         handler: function(){
           this.favorite(item);
