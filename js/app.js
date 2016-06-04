@@ -52,10 +52,10 @@ var megaRoster = {
     var toggleElement = el.parentElement.querySelector('.toggleEdit');
     if (el.contentEditable === "true") {
         el.contentEditable = "false";
-        toggleElement.innerHTML = "edit";
+        toggleElement.innerHTML = "Edit";
     } else {
         el.contentEditable = "true";
-        toggleElement.innerHTML = "update";
+        toggleElement.innerHTML = "Update";
         el.focus();
     }
   },
@@ -65,25 +65,30 @@ var megaRoster = {
     span.className = 'actions';
 
     var deleteLink = this.buildLink({
-      contents: 'remove',
+      contents: 'Remove',
+      className : 'remove button small alert',
       handler: function(ev) {
         this.rosterElement.removeChild(item);
       }
     });
+    span.appendChild(deleteLink);
 
     var promoteLink = this.buildLink({
-      contents: 'promote',
+      contents: 'Promote',
+      className: 'promote button small',
       handler: function() {
         this.promote(item);
       }
     });
-
-    span.appendChild(deleteLink);
+    var favLink = this.buildLink({
+        contents: 'Favorite',
+        className: 'favorite button small',
+    });
     span.appendChild(promoteLink);
 
     span.appendChild(this.buildLink({
       contents: '<i class="fa fa-arrow-up"></i>',
-      className: 'up',
+      className: 'button tiny success',
       handler: function() {
         if (item !== this.rosterElement.firstElementChild) {
           this.moveUp(item);
@@ -92,8 +97,8 @@ var megaRoster = {
     }));
 
     span.appendChild(this.buildLink({
-      contents: 'down',
-      className: 'down',
+      contents: '<i class = "fa fa-arrow-down"</i>',
+      className: 'button tiny success',
       handler: function() {
         if (item !== this.rosterElement.lastElementChild) {
           this.moveDown(item);
@@ -102,8 +107,8 @@ var megaRoster = {
     }));
 
     span.appendChild(this.buildLink({
-      contents: 'edit',
-      className: 'toggleEdit',
+      contents: 'Edit',
+      className: ' toggleEdit button small',
       handler: function() {
         this.toggleEditable(item.querySelector('span.studentName'));
       }
