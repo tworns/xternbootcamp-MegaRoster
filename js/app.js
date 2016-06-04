@@ -48,7 +48,8 @@ var megaRoster = {
     this.moveUp(item.nextElementSibling);
   },
   favorite: function(item) {
-    item.style.backgroundColor = "Gold" ;
+     var i = item.parentElement.querySelector('.studentName');
+    i.style.backgroundColor = "Gold" ;
   },
 
   toggleEditable: function(el) {
