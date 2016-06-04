@@ -47,6 +47,9 @@ var megaRoster = {
   moveDown: function(item) {
     this.moveUp(item.nextElementSibling);
   },
+  favorite: function(item) {
+    item.style.backgroundColor = "Gold" ;
+  },
 
   toggleEditable: function(el) {
     var toggleElement = el.parentElement.querySelector('.toggleEdit');
@@ -80,12 +83,17 @@ var megaRoster = {
         this.promote(item);
       }
     });
+        span.appendChild(promoteLink);
+        //
     var favLink = this.buildLink({
         contents: 'Favorite',
         className: 'favorite button small',
+        handler: function(){
+          this.favorite(item);
+        },
     });
-    span.appendChild(promoteLink);
-
+    span.appendChild(favLink);
+//
     span.appendChild(this.buildLink({
       contents: '<i class="fa fa-arrow-up"></i>',
       className: 'button tiny success',
