@@ -1,28 +1,38 @@
 $(document).foundation()
-
+var studentRoster = [];
 var megaRoster = {
-    studentRoster : ["&","l","d"],
+
   init: function(rosterElementSelector) {
+
     this.rosterElement = document.querySelector(rosterElementSelector);
     this.setupEventListeners();
-    this.loadRoster(this.studentRoster);
+
+      var temp;
+    if(localStorage !== null) {
+    temp = JSON.parse(localStorage.getItem('roster'));
+    }
+      console.log(JSON.stringify(temp));
+      if(temp !== null && temp !== undefined){
+      this.studentRoster = temp;
+      console.log(Array.isArray(studentRoster));
+    }
+   megaRoster.loadRoster();
   },
 
   setupEventListeners: function() {
     document.querySelector('#studentForm').onsubmit = this.addStudent.bind(this);
 
   },
-  loadRoster : function(roster) {
-    roster = JSON.parse(localStorage.getItem('roster'));
-    debugger;
-    if(roster!== null) {
-    for(var i = 0; i< roster.length; i++) {
-      if(roster[i] !== undefined){
-      this.buildListItem(roster.shift());
+  loadRoster : function() {
+      debugger;
+    if(localStorage.length >= 1){
+    for(var i = 0; i< studentRoster.length; i++) {
+      if(studentRoster[i] !== undefined){
+      var oldList = this.buildListItem(studentRoster[i]);
+      this.prependChild(this.rosterElement,oldList);
+      }
     }
   }
-  }
-  this.studentRoster = roster;
   },
   addStudent: function(ev) {
     ev.preventDefault();
@@ -30,7 +40,7 @@ var megaRoster = {
     var studentName = f.studentName.value;
     var item = this.buildListItem(studentName);
     this.prependChild(this.rosterElement, item);
-    this.addToRoster(studentName);
+    this.saveRoster(studentName);
     f.reset();
     f.studentName.focus();
   },
@@ -49,11 +59,9 @@ var megaRoster = {
 
     return item;
   },
-  addToRoster: function(name){
-    if(megaRoster.studentRoster !== null){
-      megaRoster.studentRoster.push(name);
-      localStorage.setItem('roster',JSON.stringify(this.studentRoster));
-    }
+  saveRoster: function(name){
+      studentRoster.push(name);
+      localStorage.setItem('roster',JSON.stringify(studentRoster));
   },
   promote: function(item) {
     this.prependChild(this.rosterElement, item);
