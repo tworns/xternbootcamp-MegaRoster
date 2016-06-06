@@ -1,22 +1,21 @@
 $(document).foundation()
 var studentRoster = [];
+var rE;
+
 var megaRoster = {
-
   init: function(rosterElementSelector) {
-
+  //  this.mutants();
     this.rosterElement = document.querySelector(rosterElementSelector);
+    rE = this.rosterElement;
     this.setupEventListeners();
-
+          //debugger;
       var temp;
-    if(localStorage !== null) {
     temp = JSON.parse(localStorage.getItem('roster'));
-    }
       console.log(JSON.stringify(temp));
-      if(temp !== null && temp !== undefined){
+      if(temp){
       this.studentRoster = temp;
-      console.log(Array.isArray(studentRoster));
     }
-   megaRoster.loadRoster();
+   this.loadRoster();
   },
 
   setupEventListeners: function() {
@@ -24,12 +23,12 @@ var megaRoster = {
 
   },
   loadRoster : function() {
-      debugger;
     if(localStorage.length >= 1){
     for(var i = 0; i< studentRoster.length; i++) {
       if(studentRoster[i] !== undefined){
-      var oldList = this.buildListItem(studentRoster[i]);
-      this.prependChild(this.rosterElement,oldList);
+        addAjax(rE, studentRoster[i]);
+      /*var oldList = this.buildListItem(studentRoster[i]);
+      this.prependChild(this.rosterElement,oldList);*/
       }
     }
   }
@@ -44,7 +43,19 @@ var megaRoster = {
     f.reset();
     f.studentName.focus();
   },
-
+  mutants: function() {
+    $.ajax({
+    url: "https://mutant-school.herokuapp.com/api/v1/mutants",
+    method: "GET", })
+    .success(function(data){
+      $(data).each(function(index) {
+        megaRoster.addAjax('\n'+ 'Real Name: '+this.real_name + '\n' + 'Alias: ' +this.mutant_name);
+      });
+    })
+},
+  addAjax : function(name) {
+    this.prependChild(rE, this.buildListItem(name));
+  },
   prependChild: function(parent, child) {
     parent.insertBefore(child, parent.firstChild);
   },
@@ -77,16 +88,16 @@ var megaRoster = {
     item.querySelector('.favorite').contents = 'unfavorite';
   },
   favorite: function(item) {
-     var i = item.parentElement.querySelector('.studentName');
+
      if(item.favoriteable === "true") {
        item.querySelector('.favorite').innerHTML = 'Unfavorite';
-       i.style.backgroundColor = "Gold" ;
+       item.style.backgroundColor = "Gold" ;
        item.favoriteable = "false";
   }
   else {
     item.querySelector('.favorite').innerHTML = 'Favorite';
     item.favoriteable = "true";
-    i.style.backgroundColor = 'transparent';
+    item.style.backgroundColor = 'transparent';
   }
   },
 
