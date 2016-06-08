@@ -1,10 +1,10 @@
-$(document).foundation()
+$(document).foundation();
 var studentRoster = [];
 var rE;
 
 var megaRoster = {
   init: function(rosterElementSelector) {
-  //  this.mutants();
+    this.mutants();
     this.rosterElement = document.querySelector(rosterElementSelector);
     rE = this.rosterElement;
     this.setupEventListeners();
@@ -51,7 +51,7 @@ var megaRoster = {
       $(data).each(function(index) {
         megaRoster.addAjax('\n'+ 'Real Name: '+this.real_name + '\n' + 'Alias: ' +this.mutant_name);
       });
-    })
+    });
 },
   addAjax : function(name) {
     this.prependChild(rE, this.buildListItem(name));
@@ -145,6 +145,15 @@ var megaRoster = {
     });
     span.appendChild(favLink);
 //
+  var rivalLink = this.buildRival({
+    contents: '<i class="fa fa-bomb"></i>"',
+    className: 'rival button small',
+    handler : function() {
+
+    },
+  });
+  span.appendChild(rivalLink);
+//
     span.appendChild(this.buildLink({
       contents: '<i class="fa fa-arrow-up"></i>',
       className: 'button tiny success',
@@ -179,6 +188,14 @@ var megaRoster = {
   buildLink: function(options) {
     var link = document.createElement('a');
     link.href = '#';
+    link.innerHTML = options.contents;
+    link.onclick = options.handler.bind(this);
+    link.className = options.className;
+    return link;
+  },
+  buildRival: function(options) {
+    var link = document.createElement('a');
+    link.href = './rivalries/rivalries.html';
     link.innerHTML = options.contents;
     link.onclick = options.handler.bind(this);
     link.className = options.className;
